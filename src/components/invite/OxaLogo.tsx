@@ -5,8 +5,6 @@ interface OxaLogoProps {
   /** sm = compact (envelope peek), md = default, lg = hero */
   size?: "sm" | "md" | "lg";
   priority?: boolean;
-  /** transparent = no white box (for hero backgrounds) */
-  variant?: "default" | "transparent";
 }
 
 const SIZE_CLASSES = {
@@ -19,9 +17,8 @@ export function OxaLogo({
   className = "",
   size = "md",
   priority = false,
-  variant = "default",
 }: OxaLogoProps) {
-  const src = variant === "transparent" ? "/oxa-logo-transparent.png" : "/oxa-logo.png";
+  const src = "/oxa-logo-transparent.png";
 
   return (
     <Image

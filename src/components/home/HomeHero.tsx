@@ -12,7 +12,6 @@ export function HomeHero() {
         <OxaLogo
           size="lg"
           priority
-          variant="transparent"
           className="drop-shadow-[0_4px_20px_rgba(0,0,0,0.35)]"
         />
 
