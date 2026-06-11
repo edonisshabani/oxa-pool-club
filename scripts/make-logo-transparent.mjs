@@ -11,8 +11,9 @@ for (let i = 0; i < data.length; i += 4) {
   const r = data[i];
   const g = data[i + 1];
   const b = data[i + 2];
-  if (r > 235 && g > 235 && b > 235) {
-    data[i + 3] = 0;
+  const lightness = (r + g + b) / 3;
+  if (lightness > 200 && Math.max(r, g, b) - Math.min(r, g, b) < 30) {
+    data[i + 3] = lightness > 235 ? 0 : Math.round(((235 - lightness) / 35) * 255);
   }
 }
 

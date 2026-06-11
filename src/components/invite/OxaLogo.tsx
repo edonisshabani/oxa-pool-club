@@ -27,6 +27,7 @@ export function OxaLogo({
       width={720}
       height={240}
       priority={priority}
+      unoptimized
       className={`mx-auto h-auto w-auto ${SIZE_CLASSES[size]} ${className}`}
     />
   );
