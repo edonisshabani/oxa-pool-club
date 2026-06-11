@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutGroup, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useState } from "react";
 import type { Guest } from "@/lib/types";
 import { InvitationCard } from "./InvitationCard";
@@ -11,8 +11,7 @@ interface EnvelopeInvitationProps {
   guest: Guest;
 }
 
-const EASE_LUXE = [0.22, 1, 0.36, 1] as const;
-const CARD_LAYOUT_ID = "oxa-invitation-card";
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function EnvelopeInvitation({ guest }: EnvelopeInvitationProps) {
   const [phase, setPhase] = useState<Phase>("closed");
@@ -20,183 +19,146 @@ export function EnvelopeInvitation({ guest }: EnvelopeInvitationProps) {
 
   const handleOpen = useCallback(() => {
     if (phase !== "closed") return;
-
     if (reduceMotion) {
       setPhase("open");
       return;
     }
-
     setPhase("opening");
-    window.setTimeout(() => setPhase("open"), 1300);
+    window.setTimeout(() => setPhase("open"), 1200);
   }, [phase, reduceMotion]);
 
   const isOpen = phase === "open";
   const isOpening = phase === "opening";
 
   return (
-    <div className="relative flex min-h-[100dvh] w-full items-center justify-center overflow-hidden px-4 py-8 sm:py-10">
+    <div className="relative flex min-h-[100dvh] w-full items-center justify-center overflow-hidden px-4 py-8">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#F5E6D3] via-[#FAF7F2] to-[#E8D5B7]" />
       <div className="pointer-events-none absolute -right-20 top-10 h-64 w-64 rounded-full bg-[#F4C430]/20 blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-20 h-72 w-72 rounded-full bg-[#2E6B9E]/15 blur-3xl" />
 
       <motion.p
-        className="absolute top-[max(1.5rem,env(safe-area-inset-top))] z-20 font-sans text-[10px] uppercase tracking-[0.35em] text-[#2E6B9E] sm:text-xs"
+        className="absolute top-[max(1.25rem,env(safe-area-inset-top))] z-20 font-sans text-[10px] uppercase tracking-[0.35em] text-[#2E6B9E] sm:text-xs"
         animate={{ opacity: isOpen ? 0 : 1 }}
-        transition={{ duration: 0.35 }}
       >
         Tap to open your invitation
       </motion.p>
 
-      <LayoutGroup>
-        {/* Expanded invitation */}
-        {isOpen && (
+      <AnimatePresence mode="wait">
+        {isOpen ? (
           <motion.div
-            layoutId={CARD_LAYOUT_ID}
-            className="relative z-40 w-full max-w-lg px-2"
-            transition={{ type: "spring", stiffness: 260, damping: 28 }}
+            key="invitation"
+            initial={{ opacity: 0, y: 32, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.7, ease: EASE }}
+            className="relative z-30 w-full max-w-lg px-2"
           >
             <InvitationCard guest={guest} expanded />
           </motion.div>
-        )}
-
-        {/* Envelope stage */}
-        {!isOpen && (
+        ) : (
           <motion.div
-            className="relative z-10 flex flex-col items-center"
-            initial={false}
-            animate={{
-              opacity: isOpening ? 0 : 1,
-              scale: isOpening ? 0.96 : 1,
-              y: isOpening ? 24 : 0,
-            }}
-            transition={{ duration: 0.6, ease: EASE_LUXE, delay: isOpening ? 0.55 : 0 }}
+            key="envelope"
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: isOpening ? 0 : 1, scale: isOpening ? 0.97 : 1, y: isOpening ? 20 : 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.55, ease: EASE, delay: isOpening ? 0.45 : 0 }}
+            className="relative z-10"
           >
             <motion.button
               type="button"
               onClick={handleOpen}
               disabled={phase !== "closed"}
               aria-label="Open invitation envelope"
-              className="relative cursor-pointer border-0 bg-transparent p-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A962] focus-visible:ring-offset-4 disabled:cursor-default"
-              animate={phase === "closed" ? { y: [0, -6, 0] } : { y: 0 }}
+              className="block cursor-pointer border-0 bg-transparent p-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A962] focus-visible:ring-offset-4 disabled:cursor-default"
+              animate={phase === "closed" ? { y: [0, -5, 0] } : { y: 0 }}
               transition={
                 phase === "closed"
-                  ? { duration: 3.5, repeat: Infinity, ease: "easeInOut" }
-                  : { duration: 0.25 }
+                  ? { duration: 3.2, repeat: Infinity, ease: "easeInOut" }
+                  : { duration: 0.2 }
               }
             >
-              <div
-                className="relative h-[220px] w-[min(88vw,340px)] sm:h-[260px] sm:w-[400px]"
-                style={{ perspective: "1600px" }}
-              >
-                <div className="absolute -bottom-3 left-1/2 h-7 w-[85%] -translate-x-1/2 rounded-[100%] bg-[#0D3B66]/12 blur-lg" />
+              <div className="relative mx-auto w-[min(300px,88vw)] sm:w-[340px]" style={{ height: 210 }}>
+                <div className="absolute -bottom-2 left-1/2 h-5 w-[90%] -translate-x-1/2 rounded-[100%] bg-[#0D3B66]/10 blur-md" />
 
-                {/* 1 — Back / lining */}
-                <div className="absolute inset-x-0 bottom-0 top-[24%] overflow-hidden rounded-md bg-white shadow-[0_28px_80px_rgba(13,59,102,0.22)]">
+                <div className="absolute inset-0 overflow-hidden rounded-lg bg-white shadow-[0_20px_60px_rgba(13,59,102,0.18)]">
+                  {/* Yellow lining — hidden behind white layers when closed */}
                   <div
                     className="absolute inset-0"
                     style={{
                       background:
-                        "repeating-linear-gradient(135deg, #FFD54F 0px, #FFD54F 9px, #FFF8E7 9px, #FFF8E7 18px)",
+                        "repeating-linear-gradient(135deg, #FFD54F 0px, #FFD54F 8px, #FFF8E7 8px, #FFF8E7 16px)",
                     }}
                   />
-                </div>
 
-                {/* 2 — Invitation card (inside envelope) */}
-                <motion.div
-                  layoutId={CARD_LAYOUT_ID}
-                  className="absolute left-1/2 z-[14] w-[78%] -translate-x-1/2"
-                  style={{ top: "22%" }}
-                  animate={
-                    isOpening
-                      ? { y: -72, scale: 1.02, rotateX: -6 }
-                      : { y: 18, scale: 0.88, rotateX: 0 }
-                  }
-                  transition={{
-                    duration: 0.95,
-                    ease: EASE_LUXE,
-                    delay: isOpening ? 0.28 : 0,
-                  }}
-                >
-                  <InvitationCard guest={guest} />
-                </motion.div>
-
-                {/* 3 — Side folds */}
-                <div
-                  className="absolute bottom-0 left-0 z-[16] h-[72%] w-[52%] bg-gradient-to-br from-white to-[#EFEFEF]"
-                  style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%)" }}
-                />
-                <div
-                  className="absolute bottom-0 right-0 z-[16] h-[72%] w-[52%] bg-gradient-to-bl from-white to-[#EFEFEF]"
-                  style={{ clipPath: "polygon(0 0, 100% 100%, 0 100%)" }}
-                />
-
-                {/* 4 — Bottom flap */}
-                <motion.div
-                  className="absolute inset-x-0 bottom-0 z-[18] h-[50%] origin-bottom bg-white"
-                  style={{ clipPath: "polygon(0 100%, 50% 6%, 100% 100%)" }}
-                  animate={isOpening ? { rotateX: 32, y: 4 } : { rotateX: 0, y: 0 }}
-                  transition={{ duration: 0.5, ease: EASE_LUXE, delay: 0.18 }}
-                />
-
-                {/* 5 — Top flap (3D) */}
-                <div
-                  className="absolute inset-x-0 top-0 z-[22] h-[56%]"
-                  style={{ transformStyle: "preserve-3d" }}
-                >
+                  {/* Card peek */}
                   <motion.div
-                    className="h-full w-full"
-                    style={{
-                      transformOrigin: "50% 0%",
-                      transformStyle: "preserve-3d",
-                    }}
-                    animate={isOpening ? { rotateX: 175 } : { rotateX: 0 }}
-                    transition={{ duration: 0.8, ease: EASE_LUXE, delay: 0.05 }}
+                    className="absolute left-1/2 z-[1] w-[68%] -translate-x-1/2 overflow-hidden rounded-sm border border-[#E8D5B7]/60 bg-[#FFFCF7] shadow-sm"
+                    style={{ top: 36, height: 100 }}
+                    animate={isOpening ? { y: -80, opacity: 0 } : { y: 0, opacity: 1 }}
+                    transition={{ duration: 0.8, ease: EASE, delay: isOpening ? 0.2 : 0 }}
                   >
-                    {/* Front of flap */}
-                    <div
-                      className="absolute inset-0 bg-gradient-to-b from-white to-[#F3F3F3] shadow-[0_8px_24px_rgba(13,59,102,0.1)]"
-                      style={{
-                        clipPath: "polygon(0 0, 100% 0, 50% 100%)",
-                        backfaceVisibility: "hidden",
-                      }}
-                    />
-                    {/* Back of flap — yellow lining */}
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        clipPath: "polygon(0 0, 100% 0, 50% 100%)",
-                        transform: "rotateX(180deg)",
-                        backfaceVisibility: "hidden",
-                        background:
-                          "repeating-linear-gradient(135deg, #FFD54F 0px, #FFD54F 9px, #FFF8E7 9px, #FFF8E7 18px)",
-                      }}
-                    />
+                    <div className="h-1 bg-gradient-to-r from-[#C9A962] via-[#F4C430] to-[#C9A962]" />
+                    <div className="flex h-[calc(100%-4px)] items-center justify-center">
+                      <p className="font-serif text-[10px] tracking-[0.3em] text-[#1A4B7C]">OXA</p>
+                    </div>
+                  </motion.div>
+
+                  {/* Front pocket — covers lower half */}
+                  <div
+                    className="absolute inset-x-0 bottom-0 z-[2] bg-white"
+                    style={{ height: "58%", clipPath: "polygon(0 100%, 50% 8%, 100% 100%)" }}
+                  />
+
+                  {/* Side crease shadows (subtle, white only) */}
+                  <div
+                    className="pointer-events-none absolute bottom-0 left-0 z-[3] h-[50%] w-1/2 bg-gradient-to-r from-[#F0F0F0] to-white opacity-80"
+                    style={{ clipPath: "polygon(0 100%, 100% 15%, 100% 100%)" }}
+                  />
+                  <div
+                    className="pointer-events-none absolute bottom-0 right-0 z-[3] h-[50%] w-1/2 bg-gradient-to-l from-[#F0F0F0] to-white opacity-80"
+                    style={{ clipPath: "polygon(0 15%, 100% 100%, 0 100%)" }}
+                  />
+
+                  {/* Top flap */}
+                  <div className="absolute inset-x-0 top-0 z-[4]" style={{ height: "52%", perspective: 1200 }}>
+                    <motion.div
+                      className="relative h-full w-full origin-top"
+                      animate={isOpening ? { rotateX: -165 } : { rotateX: 0 }}
+                      transition={{ duration: 0.75, ease: EASE, delay: 0.05 }}
+                      style={{ transformStyle: "preserve-3d" }}
+                    >
+                      <div
+                        className="absolute inset-0 bg-white"
+                        style={{ clipPath: "polygon(0 0, 100% 0, 50% 100%)", backfaceVisibility: "hidden" }}
+                      />
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          clipPath: "polygon(0 0, 100% 0, 50% 100%)",
+                          transform: "rotateX(180deg)",
+                          backfaceVisibility: "hidden",
+                          background:
+                            "repeating-linear-gradient(135deg, #FFD54F 0px, #FFD54F 8px, #FFF8E7 8px, #FFF8E7 16px)",
+                        }}
+                      />
+                    </motion.div>
+                  </div>
+
+                  {/* Wax seal */}
+                  <motion.div
+                    className="absolute left-1/2 z-[5] flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full sm:h-12 sm:w-12"
+                    style={{ top: "46%", background: "radial-gradient(circle at 30% 25%, #F0D878, #C9A962 50%, #9A7B3F 100%)", boxShadow: "inset 0 2px 5px rgba(255,255,255,0.45), 0 5px 14px rgba(100,75,30,0.35)" }}
+                    animate={isOpening ? { scale: 0, opacity: 0 } : { scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.35, ease: EASE }}
+                  >
+                    <span className="font-serif text-base font-bold text-[#5C4A1F]">O</span>
                   </motion.div>
                 </div>
-
-                {/* 6 — Wax seal */}
-                <motion.div
-                  className="absolute left-1/2 top-[41%] z-[26] flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full sm:h-14 sm:w-14"
-                  style={{
-                    background:
-                      "radial-gradient(circle at 30% 25%, #F2DA7A, #C9A962 52%, #96783A 100%)",
-                    boxShadow:
-                      "inset 0 2px 6px rgba(255,255,255,0.5), 0 6px 16px rgba(100,75,30,0.4)",
-                  }}
-                  animate={
-                    isOpening
-                      ? { scale: [1, 1.2, 0], opacity: [1, 1, 0], y: [0, -4, 10] }
-                      : { scale: 1, opacity: 1, y: 0 }
-                  }
-                  transition={{ duration: 0.42, ease: EASE_LUXE }}
-                >
-                  <span className="font-serif text-lg font-bold text-[#5C4A1F]">O</span>
-                </motion.div>
               </div>
             </motion.button>
           </motion.div>
         )}
-      </LayoutGroup>
+      </AnimatePresence>
     </div>
   );
 }
