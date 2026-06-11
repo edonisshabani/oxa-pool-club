@@ -14,6 +14,7 @@ export const COLORS = {
   goldDark: "#A68B4B",
 } as const;
 
+/** @deprecated kept for type compatibility — use MEMBERSHIP_CARD_COPY */
 export const EVENT_DETAILS: EventDetails = {
   title: "Summer Soirée",
   date: "Saturday, 19 July 2026",
@@ -21,6 +22,16 @@ export const EVENT_DETAILS: EventDetails = {
   location: "Oxa Pool Club",
   locationAddress: "French Riviera, Côte d'Azur",
 };
+
+export const MEMBERSHIP_CARD_COPY = {
+  headline: "WELCOME TO OXA POOL CLUB",
+  paragraphs: [
+    "This Special Guest Membership Card grants complimentary access to Oxa Pool Club throughout the 2026 season.",
+    "As a valued guest of OXA, you are invited to enjoy exclusive access, premium hospitality, and unforgettable summer experiences inspired by the French Riviera lifestyle.",
+    "Thank you for being part of Oxa Pool Club!",
+  ],
+  validity: "Valid for the entire 2026 season.",
+} as const;
 
 export const STORAGE_KEY = "oxa-guests";
 export const ADMIN_SESSION_KEY = "oxa-admin-session";

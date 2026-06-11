@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { EVENT_DETAILS } from "@/lib/constants";
+import { MEMBERSHIP_CARD_COPY } from "@/lib/constants";
 import type { Guest } from "@/lib/types";
 import { OxaLogo } from "./OxaLogo";
 
@@ -23,7 +23,6 @@ export function InvitationCard({ guest, expanded = false }: InvitationCardProps)
           "0 25px 50px -12px rgba(13, 59, 102, 0.25), 0 0 0 1px rgba(201, 169, 98, 0.15)",
       }}
     >
-      {/* Gold top border accent */}
       <div className="h-1 bg-gradient-to-r from-[#C9A962] via-[#F4C430] to-[#C9A962]" />
 
       <div className={`text-center ${expanded ? "px-8 py-10 sm:px-10 sm:py-12" : "px-5 py-6"}`}>
@@ -50,62 +49,25 @@ export function InvitationCard({ guest, expanded = false }: InvitationCardProps)
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="space-y-4 font-sans text-[#1A4B7C]"
+            className="space-y-5 text-left font-sans text-[#1A4B7C]"
           >
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.25em] text-[#C9A962]">
-                Event
-              </p>
-              <p className="mt-1 font-serif text-2xl text-[#0D3B66]">
-                {EVENT_DETAILS.title}
-              </p>
+            <h2 className="text-center font-serif text-xl tracking-wide text-[#0D3B66] sm:text-2xl">
+              {MEMBERSHIP_CARD_COPY.headline}
+            </h2>
+
+            <div className="space-y-4 rounded-sm bg-[#FAF7F2] px-5 py-5 text-sm leading-relaxed sm:text-[15px]">
+              {MEMBERSHIP_CARD_COPY.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </div>
 
-            <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
-              <div className="rounded-sm bg-[#FAF7F2] px-4 py-3">
-                <p className="text-[10px] uppercase tracking-wider text-[#C9A962]">
-                  Date
-                </p>
-                <p className="mt-1 font-medium">{EVENT_DETAILS.date}</p>
-              </div>
-              <div className="rounded-sm bg-[#FAF7F2] px-4 py-3">
-                <p className="text-[10px] uppercase tracking-wider text-[#C9A962]">
-                  Time
-                </p>
-                <p className="mt-1 font-medium">{EVENT_DETAILS.time}</p>
-              </div>
-            </div>
-
-            <div className="rounded-sm bg-[#FAF7F2] px-4 py-3 text-sm">
-              <p className="text-[10px] uppercase tracking-wider text-[#C9A962]">
-                Location
-              </p>
-              <p className="mt-1 font-serif text-lg text-[#0D3B66]">
-                {EVENT_DETAILS.location}
-              </p>
-              {EVENT_DETAILS.locationAddress && (
-                <p className="mt-0.5 text-xs text-[#2E6B9E]">
-                  {EVENT_DETAILS.locationAddress}
-                </p>
-              )}
-            </div>
-
-            <motion.button
-              type="button"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="mt-2 w-full cursor-pointer rounded-sm bg-gradient-to-r from-[#1A4B7C] to-[#2E6B9E] px-6 py-3.5 font-sans text-sm font-medium uppercase tracking-[0.2em] text-white shadow-lg transition-shadow hover:shadow-xl"
-              onClick={() => {
-                window.location.href = `mailto:rsvp@oxapoolclub.com?subject=RSVP - ${fullName}`;
-              }}
-            >
-              RSVP
-            </motion.button>
+            <p className="text-center text-xs font-medium uppercase tracking-[0.2em] text-[#C9A962] sm:text-sm">
+              {MEMBERSHIP_CARD_COPY.validity}
+            </p>
           </motion.div>
         )}
       </div>
 
-      {/* Subtle striped resort lining at bottom */}
       <div
         className="h-3"
         style={{
