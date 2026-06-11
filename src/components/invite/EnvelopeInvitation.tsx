@@ -1,8 +1,8 @@
 "use client";
 
+import { HeroBeachBackground } from "@/components/home/HeroBeachBackground";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useState } from "react";
-import { HeroBeachStrip } from "@/components/home/HeroBeachStrip";
 import type { Guest } from "@/lib/types";
 import { InvitationCard } from "./InvitationCard";
 
@@ -32,14 +32,11 @@ export function EnvelopeInvitation({ guest }: EnvelopeInvitationProps) {
   const isOpening = phase === "opening";
 
   return (
-    <div className="relative flex min-h-[100dvh] w-full flex-col overflow-hidden">
-      <div className="relative flex flex-1 items-center justify-center px-4 py-8">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#F5E6D3] via-[#FAF7F2] to-[#E8D5B7]" />
-      <div className="pointer-events-none absolute -right-20 top-10 h-64 w-64 rounded-full bg-[#F4C430]/20 blur-3xl" />
-      <div className="pointer-events-none absolute -left-16 bottom-20 h-72 w-72 rounded-full bg-[#2E6B9E]/15 blur-3xl" />
+    <div className="relative flex min-h-[100dvh] w-full items-center justify-center overflow-hidden px-4 py-8">
+      <HeroBeachBackground />
 
       <motion.p
-        className="absolute top-[max(1.25rem,env(safe-area-inset-top))] z-20 font-sans text-[10px] uppercase tracking-[0.35em] text-[#2E6B9E] sm:text-xs"
+        className="absolute top-[max(1.25rem,env(safe-area-inset-top))] z-20 font-sans text-[10px] uppercase tracking-[0.35em] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] sm:text-xs"
         animate={{ opacity: isOpen ? 0 : 1 }}
       >
         Tap to open your invitation
@@ -80,10 +77,9 @@ export function EnvelopeInvitation({ guest }: EnvelopeInvitationProps) {
               }
             >
               <div className="relative mx-auto w-[min(300px,88vw)] sm:w-[340px]" style={{ height: 210 }}>
-                <div className="absolute -bottom-2 left-1/2 h-5 w-[90%] -translate-x-1/2 rounded-[100%] bg-[#0D3B66]/10 blur-md" />
+                <div className="absolute -bottom-2 left-1/2 h-5 w-[90%] -translate-x-1/2 rounded-[100%] bg-[#0D3B66]/20 blur-md" />
 
-                <div className="absolute inset-0 overflow-hidden rounded-lg bg-white shadow-[0_20px_60px_rgba(13,59,102,0.18)]">
-                  {/* Yellow lining — hidden behind white layers when closed */}
+                <div className="absolute inset-0 overflow-hidden rounded-lg bg-white shadow-[0_20px_60px_rgba(13,59,102,0.25)]">
                   <div
                     className="absolute inset-0"
                     style={{
@@ -92,7 +88,6 @@ export function EnvelopeInvitation({ guest }: EnvelopeInvitationProps) {
                     }}
                   />
 
-                  {/* Card peek */}
                   <motion.div
                     className="absolute left-1/2 z-[1] w-[68%] -translate-x-1/2 overflow-hidden rounded-sm border border-[#E8D5B7]/60 bg-[#FFFCF7] shadow-sm"
                     style={{ top: 36, height: 100 }}
@@ -105,13 +100,11 @@ export function EnvelopeInvitation({ guest }: EnvelopeInvitationProps) {
                     </div>
                   </motion.div>
 
-                  {/* Front pocket — covers lower half */}
                   <div
                     className="absolute inset-x-0 bottom-0 z-[2] bg-white"
                     style={{ height: "58%", clipPath: "polygon(0 100%, 50% 8%, 100% 100%)" }}
                   />
 
-                  {/* Side crease shadows (subtle, white only) */}
                   <div
                     className="pointer-events-none absolute bottom-0 left-0 z-[3] h-[50%] w-1/2 bg-gradient-to-r from-[#F0F0F0] to-white opacity-80"
                     style={{ clipPath: "polygon(0 100%, 100% 15%, 100% 100%)" }}
@@ -121,7 +114,6 @@ export function EnvelopeInvitation({ guest }: EnvelopeInvitationProps) {
                     style={{ clipPath: "polygon(0 15%, 100% 100%, 0 100%)" }}
                   />
 
-                  {/* Top flap */}
                   <div className="absolute inset-x-0 top-0 z-[4]" style={{ height: "52%", perspective: 1200 }}>
                     <motion.div
                       className="relative h-full w-full origin-top"
@@ -146,10 +138,13 @@ export function EnvelopeInvitation({ guest }: EnvelopeInvitationProps) {
                     </motion.div>
                   </div>
 
-                  {/* Wax seal */}
                   <motion.div
                     className="absolute left-1/2 z-[5] flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full sm:h-12 sm:w-12"
-                    style={{ top: "46%", background: "radial-gradient(circle at 30% 25%, #F0D878, #C9A962 50%, #9A7B3F 100%)", boxShadow: "inset 0 2px 5px rgba(255,255,255,0.45), 0 5px 14px rgba(100,75,30,0.35)" }}
+                    style={{
+                      top: "46%",
+                      background: "radial-gradient(circle at 30% 25%, #F0D878, #C9A962 50%, #9A7B3F 100%)",
+                      boxShadow: "inset 0 2px 5px rgba(255,255,255,0.45), 0 5px 14px rgba(100,75,30,0.35)",
+                    }}
                     animate={isOpening ? { scale: 0, opacity: 0 } : { scale: 1, opacity: 1 }}
                     transition={{ duration: 0.35, ease: EASE }}
                   >
@@ -161,9 +156,6 @@ export function EnvelopeInvitation({ guest }: EnvelopeInvitationProps) {
           </motion.div>
         )}
       </AnimatePresence>
-      </div>
-
-      <HeroBeachStrip className="shrink-0" />
     </div>
   );
 }

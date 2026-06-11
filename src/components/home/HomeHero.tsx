@@ -1,21 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { OxaLogo } from "@/components/invite/OxaLogo";
+import { HeroBeachBackground } from "./HeroBeachBackground";
 
 export function HomeHero() {
   return (
     <section className="relative flex min-h-[100dvh] w-full items-center justify-center overflow-hidden">
-      <Image
-        src="/hero-beach.png"
-        alt="Oxa Pool Club beachfront with yellow and white striped umbrellas"
-        fill
-        priority
-        className="object-cover object-center"
-        sizes="100vw"
-      />
-
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0D3B66]/25 via-[#0D3B66]/10 to-[#0D3B66]/35]" />
+      <HeroBeachBackground />
 
       <div className="relative z-10 flex flex-col items-center px-6 text-center">
         <div className="rounded-sm bg-white/90 px-8 py-6 shadow-[0_20px_60px_rgba(13,59,102,0.2)] backdrop-blur-sm sm:px-10 sm:py-8">
