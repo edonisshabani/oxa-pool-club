@@ -40,3 +40,13 @@ body {
 .font-sans {
   font-family: var(--font-dm-sans), system-ui, sans-serif;
 }
+
+/* Envelope 3D flap support */
+.envelope-3d {
+  transform-style: preserve-3d;
+}
+
+.envelope-flap-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}

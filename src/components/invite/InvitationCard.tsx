@@ -47,9 +47,9 @@ export function InvitationCard({ guest, expanded = false }: InvitationCardProps)
 
         {expanded && (
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
+            transition={{ delay: 0.15, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="space-y-4 font-sans text-[#1A4B7C]"
           >
             <div>
