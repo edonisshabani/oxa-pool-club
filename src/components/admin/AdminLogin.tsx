@@ -73,10 +73,6 @@ export function AdminLogin({ onAuthenticated }: AdminLoginProps) {
         >
           {loading ? "Verifying…" : "Enter Dashboard"}
         </button>
-
-        <p className="mt-4 text-center font-sans text-[10px] text-[#2E6B9E]/70">
-          Default password: oxapool — set ADMIN_PASSWORD in .env.local
-        </p>
       </form>
     </div>
   );
