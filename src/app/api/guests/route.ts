@@ -21,9 +21,10 @@ export async function POST(request: Request) {
 
     const guest = await guestRepository.create({ firstName, surname });
     return NextResponse.json(guest, { status: 201 });
-  } catch {
+  } catch (error) {
+    console.error("Failed to create guest:", error);
     return NextResponse.json(
-      { error: "Failed to create guest." },
+      { error: "Failed to create guest. Storage may not be configured." },
       { status: 500 }
     );
   }
