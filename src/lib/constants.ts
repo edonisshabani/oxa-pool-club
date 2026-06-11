@@ -14,7 +14,6 @@ export const COLORS = {
   goldDark: "#A68B4B",
 } as const;
 
-/** @deprecated kept for type compatibility — use MEMBERSHIP_CARD_COPY */
 export const EVENT_DETAILS: EventDetails = {
   title: "Summer Soirée",
   date: "Saturday, 19 July 2026",
@@ -31,6 +30,7 @@ export const MEMBERSHIP_CARD_COPY = {
     "Thank you for being part of Oxa Pool Club!",
   ],
   validity: "Valid for the entire 2026 season.",
+  entranceNotice: "Please show your ID at the entrance.",
 } as const;
 
 export const STORAGE_KEY = "oxa-guests";

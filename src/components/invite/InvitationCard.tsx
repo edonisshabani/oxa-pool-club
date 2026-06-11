@@ -64,6 +64,10 @@ export function InvitationCard({ guest, expanded = false }: InvitationCardProps)
             <p className="text-center text-xs font-medium uppercase tracking-[0.2em] text-[#C9A962] sm:text-sm">
               {MEMBERSHIP_CARD_COPY.validity}
             </p>
+
+            <p className="border-t border-[#E8D5B7] pt-4 text-center text-sm font-medium italic text-[#2E6B9E]">
+              {MEMBERSHIP_CARD_COPY.entranceNotice}
+            </p>
           </motion.div>
         )}
       </div>
