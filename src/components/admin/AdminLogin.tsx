@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { OxaLogo } from "@/components/invite/OxaLogo";
 import { ADMIN_SESSION_KEY } from "@/lib/constants";
 
 interface AdminLoginProps {
@@ -45,10 +46,9 @@ export function AdminLogin({ onAuthenticated }: AdminLoginProps) {
         onSubmit={handleSubmit}
         className="w-full max-w-md rounded-sm border border-[#E8D5B7] bg-white p-8 shadow-xl"
       >
-        <p className="font-serif text-2xl tracking-wide text-[#0D3B66]">
-          Oxa Pool Club
-        </p>
-        <p className="mt-1 font-sans text-sm text-[#2E6B9E]">Admin Access</p>
+        <OxaLogo size="md" className="mb-2" />
+
+        <p className="mt-2 text-center font-sans text-sm text-[#2E6B9E]">Admin Access</p>
 
         <label className="mt-8 block font-sans text-xs uppercase tracking-wider text-[#1A4B7C]">
           Password

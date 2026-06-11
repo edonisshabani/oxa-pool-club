@@ -1,6 +1,7 @@
 "use client";
 
 import { HeroBeachBackground } from "@/components/home/HeroBeachBackground";
+import { OxaLogo } from "./OxaLogo";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useState } from "react";
 import type { Guest } from "@/lib/types";
@@ -95,8 +96,8 @@ export function EnvelopeInvitation({ guest }: EnvelopeInvitationProps) {
                     transition={{ duration: 0.8, ease: EASE, delay: isOpening ? 0.2 : 0 }}
                   >
                     <div className="h-1 bg-gradient-to-r from-[#C9A962] via-[#F4C430] to-[#C9A962]" />
-                    <div className="flex h-[calc(100%-4px)] items-center justify-center">
-                      <p className="font-serif text-[10px] tracking-[0.3em] text-[#1A4B7C]">OXA</p>
+                    <div className="flex h-[calc(100%-4px)] items-center justify-center px-2">
+                      <OxaLogo size="sm" className="max-h-7 max-w-[72px]" />
                     </div>
                   </motion.div>
 

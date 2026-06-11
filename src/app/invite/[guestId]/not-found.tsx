@@ -1,9 +1,14 @@
+import { OxaLogo } from "@/components/invite/OxaLogo";
+import { HeroBeachBackground } from "@/components/home/HeroBeachBackground";
+
 export default function InviteNotFound() {
   return (
-    <div className="flex min-h-[100dvh] items-center justify-center bg-gradient-to-b from-[#F5E6D3] to-[#FAF7F2] px-4 text-center">
-      <div>
-        <p className="font-serif text-3xl text-[#0D3B66]">Invitation not found</p>
-        <p className="mt-3 max-w-sm font-sans text-sm text-[#2E6B9E]">
+    <div className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-4 text-center">
+      <HeroBeachBackground />
+      <div className="relative z-10">
+        <OxaLogo size="md" className="mb-6" />
+        <p className="font-serif text-3xl text-white drop-shadow-md">Invitation not found</p>
+        <p className="mt-3 max-w-sm font-sans text-sm text-white/90 drop-shadow">
           We couldn&apos;t find an invitation for this link. Please check the URL or
           contact your host.
         </p>

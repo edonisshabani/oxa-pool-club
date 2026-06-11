@@ -1,5 +1,6 @@
 "use client";
 
+import { OxaLogo } from "@/components/invite/OxaLogo";
 import { useCallback, useEffect, useState } from "react";
 import { ADMIN_SESSION_KEY } from "@/lib/constants";
 import type { Guest } from "@/lib/types";
@@ -44,10 +45,8 @@ export function AdminDashboard() {
       <header className="border-b border-[#E8D5B7] bg-white/80 backdrop-blur-sm">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-5 sm:px-6">
           <div>
-            <h1 className="font-serif text-2xl tracking-wide text-[#0D3B66]">
-              Oxa Pool Club
-            </h1>
-            <p className="font-sans text-xs uppercase tracking-[0.2em] text-[#C9A962]">
+            <OxaLogo size="sm" className="mx-0 max-w-[140px] sm:max-w-[160px]" />
+            <p className="mt-2 font-sans text-xs uppercase tracking-[0.2em] text-[#C9A962]">
               Invitation Manager
             </p>
           </div>
