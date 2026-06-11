@@ -44,6 +44,7 @@ body {
 /* Envelope 3D flap support */
 .envelope-3d {
   transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .envelope-flap-face {

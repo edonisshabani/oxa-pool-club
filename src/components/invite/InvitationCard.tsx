@@ -1,5 +1,6 @@
 "use client";
 
+import { SOFT_EASE } from "@/lib/motion";
 import { motion } from "framer-motion";
 import { MEMBERSHIP_CARD_COPY } from "@/lib/constants";
 import type { Guest } from "@/lib/types";
@@ -8,10 +9,29 @@ import { OxaLogo } from "./OxaLogo";
 interface InvitationCardProps {
   guest: Guest;
   expanded?: boolean;
+  animateContent?: boolean;
 }
 
-export function InvitationCard({ guest, expanded = false }: InvitationCardProps) {
+const contentVariants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.2 + index * 0.08,
+      duration: 0.75,
+      ease: SOFT_EASE,
+    },
+  }),
+};
+
+export function InvitationCard({
+  guest,
+  expanded = false,
+  animateContent = true,
+}: InvitationCardProps) {
   const fullName = `${guest.firstName} ${guest.surname}`;
+  const motionState = animateContent ? "visible" : "hidden";
 
   return (
     <motion.article
@@ -26,13 +46,30 @@ export function InvitationCard({ guest, expanded = false }: InvitationCardProps)
       <div className="h-1 bg-gradient-to-r from-[#C9A962] via-[#F4C430] to-[#C9A962]" />
 
       <div className={`text-center ${expanded ? "px-8 py-10 sm:px-10 sm:py-12" : "px-5 py-6"}`}>
-        <OxaLogo className="mb-6" />
+        <motion.div
+          custom={0}
+          initial="hidden"
+          animate={motionState}
+          variants={contentVariants}
+        >
+          <OxaLogo className="mb-6" />
+        </motion.div>
 
-        <p className="font-sans text-[10px] uppercase tracking-[0.3em] text-[#2E6B9E] sm:text-xs">
+        <motion.p
+          custom={1}
+          initial="hidden"
+          animate={motionState}
+          variants={contentVariants}
+          className="font-sans text-[10px] uppercase tracking-[0.3em] text-[#2E6B9E] sm:text-xs"
+        >
           Cordially invites
-        </p>
+        </motion.p>
 
-        <h1
+        <motion.h1
+          custom={2}
+          initial="hidden"
+          animate={motionState}
+          variants={contentVariants}
           className={`font-serif text-[#0D3B66] ${
             expanded
               ? "my-4 text-3xl sm:text-4xl"
@@ -40,15 +77,22 @@ export function InvitationCard({ guest, expanded = false }: InvitationCardProps)
           }`}
         >
           {fullName}
-        </h1>
+        </motion.h1>
 
-        <div className="mx-auto mb-6 h-px w-16 bg-gradient-to-r from-transparent via-[#C9A962] to-transparent" />
+        <motion.div
+          custom={3}
+          initial="hidden"
+          animate={motionState}
+          variants={contentVariants}
+          className="mx-auto mb-6 h-px w-16 bg-gradient-to-r from-transparent via-[#C9A962] to-transparent"
+        />
 
         {expanded && (
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            custom={4}
+            initial="hidden"
+            animate={motionState}
+            variants={contentVariants}
             className="space-y-5 text-left font-sans text-[#1A4B7C]"
           >
             <h2 className="text-center font-serif text-xl tracking-wide text-[#0D3B66] sm:text-2xl">
@@ -56,18 +100,38 @@ export function InvitationCard({ guest, expanded = false }: InvitationCardProps)
             </h2>
 
             <div className="space-y-4 rounded-sm bg-[#FAF7F2] px-5 py-5 text-sm leading-relaxed sm:text-[15px]">
-              {MEMBERSHIP_CARD_COPY.paragraphs.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
+              {MEMBERSHIP_CARD_COPY.paragraphs.map((paragraph, index) => (
+                <motion.p
+                  key={paragraph}
+                  custom={5 + index}
+                  initial="hidden"
+                  animate={motionState}
+                  variants={contentVariants}
+                >
+                  {paragraph}
+                </motion.p>
               ))}
             </div>
 
-            <p className="text-center text-xs font-medium uppercase tracking-[0.2em] text-[#C9A962] sm:text-sm">
+            <motion.p
+              custom={8}
+              initial="hidden"
+              animate={motionState}
+              variants={contentVariants}
+              className="text-center text-xs font-medium uppercase tracking-[0.2em] text-[#C9A962] sm:text-sm"
+            >
               {MEMBERSHIP_CARD_COPY.validity}
-            </p>
+            </motion.p>
 
-            <p className="border-t border-[#E8D5B7] pt-4 text-center text-sm font-medium italic text-[#2E6B9E]">
+            <motion.p
+              custom={9}
+              initial="hidden"
+              animate={motionState}
+              variants={contentVariants}
+              className="border-t border-[#E8D5B7] pt-4 text-center text-sm font-medium italic text-[#2E6B9E]"
+            >
               {MEMBERSHIP_CARD_COPY.entranceNotice}
-            </p>
+            </motion.p>
           </motion.div>
         )}
       </div>
