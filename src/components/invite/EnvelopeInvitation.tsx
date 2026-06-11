@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useState } from "react";
+import { HeroBeachStrip } from "@/components/home/HeroBeachStrip";
 import type { Guest } from "@/lib/types";
 import { InvitationCard } from "./InvitationCard";
 
@@ -31,7 +32,8 @@ export function EnvelopeInvitation({ guest }: EnvelopeInvitationProps) {
   const isOpening = phase === "opening";
 
   return (
-    <div className="relative flex min-h-[100dvh] w-full items-center justify-center overflow-hidden px-4 py-8">
+    <div className="relative flex min-h-[100dvh] w-full flex-col overflow-hidden">
+      <div className="relative flex flex-1 items-center justify-center px-4 py-8">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#F5E6D3] via-[#FAF7F2] to-[#E8D5B7]" />
       <div className="pointer-events-none absolute -right-20 top-10 h-64 w-64 rounded-full bg-[#F4C430]/20 blur-3xl" />
       <div className="pointer-events-none absolute -left-16 bottom-20 h-72 w-72 rounded-full bg-[#2E6B9E]/15 blur-3xl" />
@@ -159,6 +161,9 @@ export function EnvelopeInvitation({ guest }: EnvelopeInvitationProps) {
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
+
+      <HeroBeachStrip className="shrink-0" />
     </div>
   );
 }

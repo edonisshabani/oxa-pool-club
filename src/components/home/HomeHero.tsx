@@ -15,7 +15,6 @@ export function HomeHero() {
         sizes="100vw"
       />
 
-      {/* Soft overlay for logo legibility */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#0D3B66]/25 via-[#0D3B66]/10 to-[#0D3B66]/35]" />
 
       <div className="relative z-10 flex flex-col items-center px-6 text-center">
@@ -23,9 +22,10 @@ export function HomeHero() {
           <OxaLogo className="[&_canvas]:max-h-24 [&_canvas]:max-w-[min(80vw,320px)] sm:[&_canvas]:max-h-28 sm:[&_canvas]:max-w-[360px]" />
         </div>
 
-        <p className="mt-8 max-w-sm font-sans text-sm leading-relaxed text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] sm:text-base">
-          Your personal invitation awaits. Open the link shared with you.
-        </p>
+        <div className="mt-8 max-w-sm space-y-2 font-sans text-sm text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] sm:text-base">
+          <p>Your personal invitation awaits.</p>
+          <p>Open the link shared with you.</p>
+        </div>
       </div>
     </section>
   );
