@@ -5,6 +5,8 @@ interface OxaLogoProps {
   /** sm = compact (envelope peek), md = default, lg = hero */
   size?: "sm" | "md" | "lg";
   priority?: boolean;
+  /** transparent = no white box (for hero backgrounds) */
+  variant?: "default" | "transparent";
 }
 
 const SIZE_CLASSES = {
@@ -13,11 +15,17 @@ const SIZE_CLASSES = {
   lg: "max-h-24 max-w-[min(85vw,320px)] sm:max-h-28 sm:max-w-[360px]",
 } as const;
 
-/** Oxa Pool Club logo — PNG works reliably on mobile and desktop */
-export function OxaLogo({ className = "", size = "md", priority = false }: OxaLogoProps) {
+export function OxaLogo({
+  className = "",
+  size = "md",
+  priority = false,
+  variant = "default",
+}: OxaLogoProps) {
+  const src = variant === "transparent" ? "/oxa-logo-transparent.png" : "/oxa-logo.png";
+
   return (
     <Image
-      src="/oxa-logo.png"
+      src={src}
       alt="Oxa Pool Club"
       width={720}
       height={240}
