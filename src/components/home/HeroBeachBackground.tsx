@@ -9,7 +9,7 @@ export function HeroBeachBackground() {
         alt=""
         fill
         priority
-        className="object-cover object-center"
+        className="object-cover object-center sm:object-[center_35%]"
         sizes="100vw"
         aria-hidden
       />
