@@ -1,4 +1,4 @@
-import { head, put } from "@vercel/blob";
+import { get, put } from "@vercel/blob";
 import { createGuestSlug, ensureUniqueSlug } from "../slug";
 import type { CreateGuestInput, Guest } from "../types";
 import type { GuestRepository } from "./repository";
@@ -7,11 +7,14 @@ const BLOB_PATH = "guests.json";
 
 async function readGuests(): Promise<Guest[]> {
   try {
-    const meta = await head(BLOB_PATH);
-    const response = await fetch(meta.url);
-    if (!response.ok) return [];
-    return (await response.json()) as Guest[];
-  } catch {
+    const result = await get(BLOB_PATH, { access: "private", useCache: false });
+    if (!result || result.statusCode !== 200 || !result.stream) return [];
+
+    const text = await new Response(result.stream).text();
+    if (!text.trim()) return [];
+    return JSON.parse(text) as Guest[];
+  } catch (error) {
+    console.error("Failed to read guests from blob:", error);
     return [];
   }
 }
