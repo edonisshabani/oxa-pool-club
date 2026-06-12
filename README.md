@@ -23,7 +23,8 @@ Open [http://localhost:3000](http://localhost:3000).
 
 - URL: `/admin`
 - Set `ADMIN_PASSWORD` in `.env.local` for local development (see `.env.local.example`)
-- Set `ADMIN_PASSWORD` in Vercel Environment Variables for production
+- Set `ADMIN_PASSWORD` in Vercel Environment Variables for production (name must be all caps)
+- After changing env vars in Vercel, redeploy the project for the new password to take effect
 
 ### Invitation URLs
 

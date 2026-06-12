@@ -26,7 +26,13 @@ export function AdminLogin({ onAuthenticated }: AdminLoginProps) {
       });
 
       if (!res.ok) {
-        setError("Invalid password. Please try again.");
+        const data = await res.json().catch(() => ({}));
+        setError(
+          data.error ??
+            (res.status === 503
+              ? "Admin access is not configured. Set ADMIN_PASSWORD in Vercel and redeploy."
+              : "Invalid password. Please try again."),
+        );
         return;
       }
 
