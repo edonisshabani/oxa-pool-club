@@ -1,14 +1,21 @@
+import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 
-const DEFAULT_PASSWORD = "Ujv.oxa.06.26";
-
 export async function POST(request: Request) {
+  const expected = process.env.ADMIN_PASSWORD;
+
+  if (!expected) {
+    return NextResponse.json(
+      { error: "Admin access is not configured." },
+      { status: 503 },
+    );
+  }
+
   const { password } = await request.json();
-  const expected = process.env.ADMIN_PASSWORD ?? DEFAULT_PASSWORD;
 
   if (password !== expected) {
     return NextResponse.json({ error: "Invalid password." }, { status: 401 });
   }
 
-  return NextResponse.json({ success: true, token: expected });
+  return NextResponse.json({ success: true, token: randomUUID() });
 }

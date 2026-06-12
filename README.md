@@ -22,8 +22,8 @@ Open [http://localhost:3000](http://localhost:3000).
 ### Admin access
 
 - URL: `/admin`
-- Default password: `Ujv.oxa.06.26`
-- Override with `ADMIN_PASSWORD` in `.env.local` (see `.env.local.example`)
+- Set `ADMIN_PASSWORD` in `.env.local` for local development (see `.env.local.example`)
+- Set `ADMIN_PASSWORD` in Vercel Environment Variables for production
 
 ### Invitation URLs
 
