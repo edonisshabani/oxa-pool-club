@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const DEFAULT_PASSWORD = "oxapool";
+const DEFAULT_PASSWORD = "Ujv.oxa.06.26";
 
 export async function POST(request: Request) {
   const { password } = await request.json();

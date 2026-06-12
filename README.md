@@ -22,7 +22,7 @@ Open [http://localhost:3000](http://localhost:3000).
 ### Admin access
 
 - URL: `/admin`
-- Default password: `oxapool`
+- Default password: `Ujv.oxa.06.26`
 - Override with `ADMIN_PASSWORD` in `.env.local` (see `.env.local.example`)
 
 ### Invitation URLs
