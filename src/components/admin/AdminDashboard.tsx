@@ -1,6 +1,7 @@
 "use client";
 
 import { OxaLogo } from "@/components/invite/OxaLogo";
+import { exportGuestsToExcel } from "@/lib/export-guests-excel";
 import { useCallback, useEffect, useState } from "react";
 import { ADMIN_SESSION_KEY } from "@/lib/constants";
 import type { Guest } from "@/lib/types";
@@ -68,7 +69,17 @@ export function AdminDashboard() {
           onGuestCreated={(guest) => setGuests((prev) => [guest, ...prev])}
         />
         <section>
-          <h2 className="mb-4 font-serif text-lg text-[#0D3B66]">Guest List</h2>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <h2 className="font-serif text-lg text-[#0D3B66]">Guest List</h2>
+            <button
+              type="button"
+              onClick={() => exportGuestsToExcel(guests)}
+              disabled={guests.length === 0}
+              className="cursor-pointer rounded-sm border border-[#2E6B9E] bg-white px-4 py-2 font-sans text-xs font-medium uppercase tracking-wider text-[#2E6B9E] transition hover:bg-[#2E6B9E] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Export to Excel
+            </button>
+          </div>
           <GuestTable
             guests={guests}
             onGuestDeleted={(id) =>
