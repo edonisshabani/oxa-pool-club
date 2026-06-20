@@ -61,7 +61,7 @@ export function GuestForm({ onGuestCreated }: GuestFormProps) {
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             className="mt-2 w-full rounded-sm border border-[#E8D5B7] bg-[#FAF7F2] px-3 py-2.5 text-sm text-[#0D3B66] outline-none focus:border-[#C9A962]"
-            placeholder="John"
+            placeholder="Emri"
             required
           />
         </label>
@@ -73,7 +73,7 @@ export function GuestForm({ onGuestCreated }: GuestFormProps) {
             value={surname}
             onChange={(e) => setSurname(e.target.value)}
             className="mt-2 w-full rounded-sm border border-[#E8D5B7] bg-[#FAF7F2] px-3 py-2.5 text-sm text-[#0D3B66] outline-none focus:border-[#C9A962]"
-            placeholder="Doe"
+            placeholder="Mbiemri"
             required
           />
         </label>

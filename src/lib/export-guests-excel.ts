@@ -3,8 +3,8 @@ import type { Guest } from "./types";
 
 export function exportGuestsToExcel(guests: Guest[]) {
   const rows = guests.map((guest) => ({
-    "First Name": guest.firstName,
-    Surname: guest.surname,
+    Emri: guest.firstName,
+    Mbiemri: guest.surname,
   }));
 
   const worksheet = XLSX.utils.json_to_sheet(rows);
