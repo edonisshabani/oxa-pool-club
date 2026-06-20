@@ -1,5 +1,6 @@
 "use client";
 
+import { InvitePhotoHint } from "../InvitePhotoHint";
 import { OPEN_SEQUENCE_MS, SMOOTH_EASE } from "@/lib/motion";
 import { OxaLogo } from "../OxaLogo";
 import { motion, useReducedMotion } from "framer-motion";
@@ -49,13 +50,11 @@ export function PilatesInvitation({ guest }: PilatesInvitationProps) {
     <div className="relative flex min-h-[100dvh] w-full items-center justify-center overflow-hidden px-4 py-8">
       <PilatesBackground />
 
-      <motion.p
-        className="pointer-events-none absolute top-[max(1.25rem,env(safe-area-inset-top))] z-20 font-sans text-[10px] uppercase tracking-[0.35em] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-xs"
-        animate={{ opacity: isOpen ? 0 : 1, y: isOpen ? -8 : 0 }}
-        transition={{ duration: 0.8, ease: SMOOTH_EASE }}
-      >
-        Tap to open your invitation
-      </motion.p>
+      <InvitePhotoHint
+        text="Tap to open your invitation"
+        visible={!isOpen}
+        variant="pilates"
+      />
 
       <div className="relative z-10 flex w-full max-w-lg items-center justify-center px-2">
         <motion.div

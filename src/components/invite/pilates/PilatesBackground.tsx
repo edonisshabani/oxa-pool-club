@@ -13,7 +13,8 @@ export function PilatesBackground() {
         sizes="100vw"
         aria-hidden
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#3D3D3D]/20 via-[#3D3D3D]/10 to-[#3D3D3D]/30" />
+      <div className="absolute inset-0 bg-[#1A4B7C]/10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#FCFAF7]/55 via-[#FCFAF7]/10 to-[#3D3D3D]/35" />
     </div>
   );
 }
