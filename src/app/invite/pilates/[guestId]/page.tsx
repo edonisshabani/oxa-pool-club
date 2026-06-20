@@ -12,7 +12,7 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const { guestId } = await params;
-  const guest = await resolveGuestBySlug(guestId, "pilates-collab");
+  const guest = await resolveGuestBySlug(guestId);
 
   if (!guest) {
     return { title: "Invitation Not Found — OXA × Pilates Collab" };
@@ -26,7 +26,7 @@ export async function generateMetadata({
 
 export default async function PilatesInvitePage({ params }: { params: Params }) {
   const { guestId } = await params;
-  const guest = await resolveGuestBySlug(guestId, "pilates-collab");
+  const guest = await resolveGuestBySlug(guestId);
 
   if (!guest) {
     notFound();
