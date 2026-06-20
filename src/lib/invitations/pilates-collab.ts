@@ -13,7 +13,7 @@ export const PILATES_COLLAB_COPY = {
     "A relaxed morning with an inspiring community of women",
   ],
   closing: "We would love to have you with us for this special collaboration.",
-  rsvpNote: "Please let us know if you'll be joining us. 💛",
+  rsvpNote: "Please let us know if you'll be joining us.",
 } as const;
 
 export const PILATES_EVENT_DETAILS = {
