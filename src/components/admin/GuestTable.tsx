@@ -6,10 +6,11 @@ import type { Guest } from "@/lib/types";
 
 interface GuestTableProps {
   guests: Guest[];
+  emptyMessage?: string;
   onGuestDeleted: (id: string) => void;
 }
 
-export function GuestTable({ guests, onGuestDeleted }: GuestTableProps) {
+export function GuestTable({ guests, emptyMessage, onGuestDeleted }: GuestTableProps) {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -37,9 +38,11 @@ export function GuestTable({ guests, onGuestDeleted }: GuestTableProps) {
   if (guests.length === 0) {
     return (
       <div className="rounded-sm border border-dashed border-[#E8D5B7] bg-white/60 px-6 py-12 text-center">
-        <p className="font-serif text-lg text-[#0D3B66]">No guests yet</p>
+        <p className="font-serif text-lg text-[#0D3B66]">
+          {emptyMessage ? "No guests in this list" : "No guests yet"}
+        </p>
         <p className="mt-1 font-sans text-sm text-[#2E6B9E]">
-          Add your first guest above to generate an invitation link.
+          {emptyMessage ?? "Add your first guest above to generate an invitation link."}
         </p>
       </div>
     );

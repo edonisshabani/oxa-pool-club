@@ -2,17 +2,38 @@
 
 import { OxaLogo } from "@/components/invite/OxaLogo";
 import { exportGuestsToExcel } from "@/lib/export-guests-excel";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ADMIN_SESSION_KEY } from "@/lib/constants";
-import type { Guest } from "@/lib/types";
+import type { Guest, InviteType } from "@/lib/types";
 import { AdminLogin } from "./AdminLogin";
 import { GuestForm } from "./GuestForm";
 import { GuestTable } from "./GuestTable";
 
+type GuestFilter = "all" | InviteType;
+
+const FILTER_OPTIONS: Array<{ value: GuestFilter; label: string }> = [
+  { value: "all", label: "All Guests" },
+  { value: "pool-club", label: "Pool Club" },
+  { value: "pilates-collab", label: "Pilates Collab" },
+];
+
 export function AdminDashboard() {
   const [authenticated, setAuthenticated] = useState(false);
   const [guests, setGuests] = useState<Guest[]>([]);
+  const [guestFilter, setGuestFilter] = useState<GuestFilter>("all");
   const [loading, setLoading] = useState(true);
+
+  const filteredGuests = useMemo(() => {
+    if (guestFilter === "all") return guests;
+    return guests.filter((guest) => guest.inviteType === guestFilter);
+  }, [guestFilter, guests]);
+
+  const emptyMessage =
+    guestFilter === "all"
+      ? undefined
+      : guestFilter === "pool-club"
+        ? "No pool club guests yet."
+        : "No pilates collab guests yet.";
 
   const fetchGuests = useCallback(async () => {
     const res = await fetch("/api/guests");
@@ -73,15 +94,35 @@ export function AdminDashboard() {
             <h2 className="font-serif text-lg text-[#0D3B66]">Guest List</h2>
             <button
               type="button"
-              onClick={() => exportGuestsToExcel(guests)}
-              disabled={guests.length === 0}
+              onClick={() => exportGuestsToExcel(filteredGuests)}
+              disabled={filteredGuests.length === 0}
               className="cursor-pointer rounded-sm border border-[#2E6B9E] bg-white px-4 py-2 font-sans text-xs font-medium uppercase tracking-wider text-[#2E6B9E] transition hover:bg-[#2E6B9E] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
             >
               Export to Excel
             </button>
           </div>
+          <div className="mb-4 flex flex-wrap gap-2">
+            {FILTER_OPTIONS.map((option) => {
+              const isActive = guestFilter === option.value;
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => setGuestFilter(option.value)}
+                  className={`cursor-pointer rounded-sm px-4 py-2 font-sans text-xs font-medium uppercase tracking-wider transition ${
+                    isActive
+                      ? "bg-[#1A4B7C] text-white shadow-sm"
+                      : "border border-[#E8D5B7] bg-white text-[#2E6B9E] hover:border-[#2E6B9E] hover:text-[#1A4B7C]"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
           <GuestTable
-            guests={guests}
+            guests={filteredGuests}
+            emptyMessage={emptyMessage}
             onGuestDeleted={(id) =>
               setGuests((prev) => prev.filter((g) => g.id !== id))
             }
