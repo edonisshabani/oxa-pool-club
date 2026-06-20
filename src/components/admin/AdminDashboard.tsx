@@ -2,6 +2,7 @@
 
 import { OxaLogo } from "@/components/invite/OxaLogo";
 import { exportGuestsToExcel } from "@/lib/export-guests-excel";
+import { shuffleItems } from "@/lib/shuffle";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ADMIN_SESSION_KEY } from "@/lib/constants";
 import type { Guest, InviteType } from "@/lib/types";
@@ -37,7 +38,7 @@ export function AdminDashboard() {
 
   const fetchGuests = useCallback(async () => {
     const res = await fetch("/api/guests");
-    if (res.ok) setGuests(await res.json());
+    if (res.ok) setGuests(shuffleItems(await res.json()));
   }, []);
 
   useEffect(() => {
@@ -87,7 +88,9 @@ export function AdminDashboard() {
 
       <main className="mx-auto max-w-4xl space-y-8 px-4 py-8 sm:px-6 sm:py-10">
         <GuestForm
-          onGuestCreated={(guest) => setGuests((prev) => [guest, ...prev])}
+          onGuestCreated={(guest) =>
+            setGuests((prev) => shuffleItems([guest, ...prev]))
+          }
         />
         <section>
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
