@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Guest } from "@/lib/types";
+import type { Guest, InviteType } from "@/lib/types";
 
 interface GuestFormProps {
   onGuestCreated: (guest: Guest) => void;
@@ -10,6 +10,7 @@ interface GuestFormProps {
 export function GuestForm({ onGuestCreated }: GuestFormProps) {
   const [firstName, setFirstName] = useState("");
   const [surname, setSurname] = useState("");
+  const [inviteType, setInviteType] = useState<InviteType>("pool-club");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -22,7 +23,7 @@ export function GuestForm({ onGuestCreated }: GuestFormProps) {
       const res = await fetch("/api/guests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstName, surname }),
+        body: JSON.stringify({ firstName, surname, inviteType }),
       });
 
       if (!res.ok) {
@@ -77,6 +78,18 @@ export function GuestForm({ onGuestCreated }: GuestFormProps) {
           />
         </label>
       </div>
+
+      <label className="mt-4 block font-sans text-xs uppercase tracking-wider text-[#1A4B7C]">
+        Invitation Type
+        <select
+          value={inviteType}
+          onChange={(e) => setInviteType(e.target.value as InviteType)}
+          className="mt-2 w-full rounded-sm border border-[#E8D5B7] bg-[#FAF7F2] px-3 py-2.5 text-sm text-[#0D3B66] outline-none focus:border-[#C9A962]"
+        >
+          <option value="pool-club">Oxa Pool Club</option>
+          <option value="pilates-collab">Pilates Collab</option>
+        </select>
+      </label>
 
       {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
 

@@ -1,6 +1,7 @@
 import { Redis } from "@upstash/redis";
 import { createGuestSlug, ensureUniqueSlug } from "../slug";
 import type { CreateGuestInput, Guest } from "../types";
+import { normalizeGuest, normalizeGuests } from "./normalize-guest";
 import type { GuestRepository } from "./repository";
 
 const GUESTS_KEY = "oxa:guests";
@@ -17,7 +18,7 @@ function getRedis(): Redis {
 async function readGuests(): Promise<Guest[]> {
   const redis = getRedis();
   const guests = await redis.get<Guest[]>(GUESTS_KEY);
-  return guests ?? [];
+  return normalizeGuests(guests ?? []);
 }
 
 async function writeGuests(guests: Guest[]): Promise<void> {
@@ -33,10 +34,8 @@ export const upstashGuestRepository: GuestRepository = {
 
   async getBySlug(slug: string) {
     const normalized = slug.toLowerCase();
-    return (
-      (await readGuests()).find((g) => g.slug.toLowerCase() === normalized) ??
-      null
-    );
+    const guest = (await readGuests()).find((g) => g.slug.toLowerCase() === normalized);
+    return guest ? normalizeGuest(guest) : null;
   },
 
   async create(input: CreateGuestInput) {
@@ -52,6 +51,7 @@ export const upstashGuestRepository: GuestRepository = {
       firstName: input.firstName.trim(),
       surname: input.surname.trim(),
       slug,
+      inviteType: input.inviteType ?? "pool-club",
       createdAt: new Date().toISOString(),
     };
 

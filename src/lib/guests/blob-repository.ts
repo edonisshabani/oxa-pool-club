@@ -1,6 +1,7 @@
 import { get, put } from "@vercel/blob";
 import { createGuestSlug, ensureUniqueSlug } from "../slug";
 import type { CreateGuestInput, Guest } from "../types";
+import { normalizeGuest, normalizeGuests } from "./normalize-guest";
 import type { GuestRepository } from "./repository";
 
 const BLOB_PATH = "guests.json";
@@ -12,7 +13,7 @@ async function readGuests(): Promise<Guest[]> {
 
     const text = await new Response(result.stream).text();
     if (!text.trim()) return [];
-    return JSON.parse(text) as Guest[];
+    return normalizeGuests(JSON.parse(text) as Guest[]);
   } catch (error) {
     console.error("Failed to read guests from blob:", error);
     return [];
@@ -36,10 +37,8 @@ export const blobGuestRepository: GuestRepository = {
 
   async getBySlug(slug: string) {
     const normalized = slug.toLowerCase();
-    return (
-      (await readGuests()).find((g) => g.slug.toLowerCase() === normalized) ??
-      null
-    );
+    const guest = (await readGuests()).find((g) => g.slug.toLowerCase() === normalized);
+    return guest ? normalizeGuest(guest) : null;
   },
 
   async create(input: CreateGuestInput) {
@@ -55,6 +54,7 @@ export const blobGuestRepository: GuestRepository = {
       firstName: input.firstName.trim(),
       surname: input.surname.trim(),
       slug,
+      inviteType: input.inviteType ?? "pool-club",
       createdAt: new Date().toISOString(),
     };
 

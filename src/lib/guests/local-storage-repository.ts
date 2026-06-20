@@ -1,13 +1,14 @@
 import { STORAGE_KEY } from "../constants";
 import { createGuestSlug, ensureUniqueSlug } from "../slug";
 import type { CreateGuestInput, Guest } from "../types";
+import { normalizeGuest, normalizeGuests } from "./normalize-guest";
 import type { GuestRepository } from "./repository";
 
 function readGuests(): Guest[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as Guest[]) : [];
+    return raw ? normalizeGuests(JSON.parse(raw) as Guest[]) : [];
   } catch {
     return [];
   }
@@ -28,9 +29,8 @@ export const localStorageGuestRepository: GuestRepository = {
 
   async getBySlug(slug: string) {
     const normalized = slug.toLowerCase();
-    return (
-      readGuests().find((g) => g.slug.toLowerCase() === normalized) ?? null
-    );
+    const guest = readGuests().find((g) => g.slug.toLowerCase() === normalized);
+    return guest ? normalizeGuest(guest) : null;
   },
 
   async create(input: CreateGuestInput) {
@@ -46,6 +46,7 @@ export const localStorageGuestRepository: GuestRepository = {
       firstName: input.firstName.trim(),
       surname: input.surname.trim(),
       slug,
+      inviteType: input.inviteType ?? "pool-club",
       createdAt: new Date().toISOString(),
     };
 

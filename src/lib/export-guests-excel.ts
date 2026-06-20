@@ -1,5 +1,5 @@
 import * as XLSX from "xlsx";
-import { buildInvitationUrl } from "./invitation-url";
+import { buildInvitationUrl, getInviteTypeLabel } from "./invitation-url";
 import type { Guest } from "./types";
 
 export function exportGuestsToExcel(guests: Guest[]) {
@@ -7,8 +7,9 @@ export function exportGuestsToExcel(guests: Guest[]) {
     "First Name": guest.firstName,
     Surname: guest.surname,
     "Full Name": `${guest.firstName} ${guest.surname}`,
+    Type: getInviteTypeLabel(guest.inviteType),
     Slug: guest.slug,
-    "Invitation Link": buildInvitationUrl(guest.slug),
+    "Invitation Link": buildInvitationUrl(guest.slug, guest.inviteType),
     Added: new Date(guest.createdAt).toLocaleString(),
   }));
 
@@ -17,6 +18,7 @@ export function exportGuestsToExcel(guests: Guest[]) {
     { wch: 14 },
     { wch: 14 },
     { wch: 24 },
+    { wch: 14 },
     { wch: 20 },
     { wch: 48 },
     { wch: 22 },

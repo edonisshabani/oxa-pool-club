@@ -1,7 +1,8 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { createGuestSlug, ensureUniqueSlug } from "../slug";
-import type { CreateGuestInput, Guest } from "../types";
+import type { CreateGuestInput, Guest, InviteType } from "../types";
+import { normalizeGuest, normalizeGuests } from "./normalize-guest";
 import type { GuestRepository } from "./repository";
 
 const DATA_PATH = path.join(process.cwd(), "data", "guests.json");
@@ -9,7 +10,7 @@ const DATA_PATH = path.join(process.cwd(), "data", "guests.json");
 async function readGuests(): Promise<Guest[]> {
   try {
     const raw = await fs.readFile(DATA_PATH, "utf-8");
-    return JSON.parse(raw) as Guest[];
+    return normalizeGuests(JSON.parse(raw) as Guest[]);
   } catch {
     return [];
   }
@@ -29,7 +30,8 @@ export const fileGuestRepository: GuestRepository = {
   async getBySlug(slug: string) {
     const guests = await readGuests();
     const normalized = slug.toLowerCase();
-    return guests.find((g) => g.slug.toLowerCase() === normalized) ?? null;
+    const guest = guests.find((g) => g.slug.toLowerCase() === normalized);
+    return guest ? normalizeGuest(guest) : null;
   },
 
   async create(input: CreateGuestInput) {
@@ -45,6 +47,7 @@ export const fileGuestRepository: GuestRepository = {
       firstName: input.firstName.trim(),
       surname: input.surname.trim(),
       slug,
+      inviteType: input.inviteType ?? "pool-club",
       createdAt: new Date().toISOString(),
     };
 

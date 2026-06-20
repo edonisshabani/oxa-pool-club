@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { buildInvitationUrl } from "@/lib/invitation-url";
+import { buildInvitationUrl, getInvitationPath, getInviteTypeLabel } from "@/lib/invitation-url";
 import type { Guest } from "@/lib/types";
 
 interface GuestTableProps {
@@ -14,7 +14,7 @@ export function GuestTable({ guests, onGuestDeleted }: GuestTableProps) {
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const copyLink = async (guest: Guest) => {
-    const url = buildInvitationUrl(guest.slug);
+    const url = buildInvitationUrl(guest.slug, guest.inviteType);
     await navigator.clipboard.writeText(url);
     setCopiedId(guest.id);
     setTimeout(() => setCopiedId(null), 2000);
@@ -48,14 +48,17 @@ export function GuestTable({ guests, onGuestDeleted }: GuestTableProps) {
   return (
     <div className="overflow-hidden rounded-sm border border-[#E8D5B7] bg-white shadow-sm">
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[520px] text-left font-sans text-sm">
+        <table className="w-full min-w-[680px] text-left font-sans text-sm">
           <thead>
             <tr className="border-b border-[#E8D5B7] bg-[#FAF7F2]">
               <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-[#1A4B7C]">
                 Guest Name
               </th>
               <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-[#1A4B7C]">
-                Slug
+                Type
+              </th>
+              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-[#1A4B7C]">
+                Link
               </th>
               <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-[#1A4B7C]">
                 Actions
@@ -71,7 +74,12 @@ export function GuestTable({ guests, onGuestDeleted }: GuestTableProps) {
                 <td className="px-4 py-3 font-medium text-[#0D3B66]">
                   {guest.firstName} {guest.surname}
                 </td>
-                <td className="px-4 py-3 text-[#2E6B9E]">/invite/{guest.slug}</td>
+                <td className="px-4 py-3 text-[#2E6B9E]">
+                  {getInviteTypeLabel(guest.inviteType)}
+                </td>
+                <td className="px-4 py-3 text-[#2E6B9E]">
+                  {getInvitationPath(guest.slug, guest.inviteType)}
+                </td>
                 <td className="px-4 py-3">
                   <div className="flex justify-end gap-2">
                     <button
