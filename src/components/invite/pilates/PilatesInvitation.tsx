@@ -108,7 +108,7 @@ export function PilatesInvitation({ guest }: PilatesInvitationProps) {
                   <div className="flex h-[calc(100%-4px)] flex-col items-center justify-center px-2">
                     <OxaLogo size="sm" className="max-h-7 max-w-[72px]" />
                     <p className="mt-1 font-sans text-[8px] uppercase tracking-[0.25em] text-[#8FA98F]">
-                      Pilates Collab
+                      Nomi Wellness
                     </p>
                   </div>
                 </motion.div>

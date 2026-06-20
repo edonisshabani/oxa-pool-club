@@ -10,10 +10,10 @@ export const INVITE_TYPE_CONFIG: Record<InviteType, InviteTypeConfig> = {
       "You are cordially invited to an exclusive event at Oxa Pool Club.",
   },
   "pilates-collab": {
-    label: "OXA × Pilates Collab",
+    label: "Oxa Pool Club x Nomi Wellness Studio",
     shortLabel: "Pilates Collab",
-    metadataTitle: "OXA × Pilates Collab",
+    metadataTitle: "Oxa Pool Club x Nomi Wellness Studio",
     metadataDescription:
-      "You are invited to an exclusive OXA Pool Club and pilates studio collaboration.",
+      "You're invited to a special morning at Oxa Pool Club x Nomi Wellness Studio on 26 June at 09:00.",
   },
 };

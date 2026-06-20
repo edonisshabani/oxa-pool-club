@@ -44,23 +44,13 @@ export function PilatesInvitationCard({
       <div className="px-8 py-10 text-center sm:px-10 sm:py-12">
         <motion.div custom={0} initial="hidden" animate={motionState} variants={contentVariants}>
           <OxaLogo className="mb-4" />
-          <p className="font-sans text-[10px] uppercase tracking-[0.35em] text-[#8FA98F] sm:text-xs">
-            OXA × Pilates
+          <p className="font-sans text-[10px] uppercase tracking-[0.25em] text-[#8FA98F] sm:text-xs">
+            {PILATES_COLLAB_COPY.partnerLabel}
           </p>
         </motion.div>
 
-        <motion.p
-          custom={1}
-          initial="hidden"
-          animate={motionState}
-          variants={contentVariants}
-          className="mt-6 font-sans text-[10px] uppercase tracking-[0.3em] text-[#7A6A63] sm:text-xs"
-        >
-          {PILATES_COLLAB_COPY.inviteLabel}
-        </motion.p>
-
         <motion.h1
-          custom={2}
+          custom={1}
           initial="hidden"
           animate={motionState}
           variants={contentVariants}
@@ -70,7 +60,7 @@ export function PilatesInvitationCard({
         </motion.h1>
 
         <motion.div
-          custom={3}
+          custom={2}
           initial="hidden"
           animate={motionState}
           variants={contentVariants}
@@ -78,7 +68,7 @@ export function PilatesInvitationCard({
         />
 
         <motion.div
-          custom={4}
+          custom={3}
           initial="hidden"
           animate={motionState}
           variants={contentVariants}
@@ -88,21 +78,11 @@ export function PilatesInvitationCard({
             {PILATES_COLLAB_COPY.headline}
           </h2>
 
-          <div className="rounded-sm bg-[#F3EEE8] px-5 py-4 text-sm sm:text-[15px]">
-            <p className="text-center font-medium text-[#3D3D3D]">{PILATES_EVENT_DETAILS.title}</p>
-            <div className="mt-3 space-y-1 text-center text-[#6B625C]">
-              <p>{PILATES_EVENT_DETAILS.date}</p>
-              <p>{PILATES_EVENT_DETAILS.time}</p>
-              <p>{PILATES_EVENT_DETAILS.location}</p>
-              <p className="text-xs">{PILATES_EVENT_DETAILS.locationAddress}</p>
-            </div>
-          </div>
-
           <div className="space-y-4 rounded-sm bg-white/70 px-5 py-5 text-sm leading-relaxed sm:text-[15px]">
             {PILATES_COLLAB_COPY.paragraphs.map((paragraph, index) => (
               <motion.p
                 key={paragraph}
-                custom={5 + index}
+                custom={4 + index}
                 initial="hidden"
                 animate={motionState}
                 variants={contentVariants}
@@ -110,26 +90,50 @@ export function PilatesInvitationCard({
                 {paragraph}
               </motion.p>
             ))}
+
+            <motion.div custom={6} initial="hidden" animate={motionState} variants={contentVariants}>
+              <p>{PILATES_COLLAB_COPY.highlightsIntro}</p>
+              <ul className="mt-3 list-disc space-y-2 pl-5">
+                {PILATES_COLLAB_COPY.highlights.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </motion.div>
+
+            <motion.p custom={7} initial="hidden" animate={motionState} variants={contentVariants}>
+              {PILATES_COLLAB_COPY.closing}
+            </motion.p>
           </div>
 
-          <motion.p
+          <motion.div
             custom={8}
             initial="hidden"
             animate={motionState}
             variants={contentVariants}
-            className="text-center text-xs font-medium uppercase tracking-[0.2em] text-[#8FA98F] sm:text-sm"
+            className="rounded-sm bg-[#F3EEE8] px-5 py-4 text-sm sm:text-[15px]"
           >
-            {PILATES_COLLAB_COPY.validity}
-          </motion.p>
+            <div className="space-y-1 text-[#6B625C]">
+              <p>
+                <span className="font-medium text-[#3D3D3D]">Date:</span> {PILATES_EVENT_DETAILS.date}
+              </p>
+              <p>
+                <span className="font-medium text-[#3D3D3D]">Time:</span> {PILATES_EVENT_DETAILS.time}
+              </p>
+              <p>
+                <span className="font-medium text-[#3D3D3D]">Location:</span>{" "}
+                {PILATES_EVENT_DETAILS.location}
+              </p>
+            </div>
+          </motion.div>
 
           <motion.p
             custom={9}
             initial="hidden"
             animate={motionState}
             variants={contentVariants}
-            className="border-t border-[#E4D8D0] pt-4 text-center text-sm font-medium italic text-[#7A6A63]"
+            className="border-t border-[#E4D8D0] pt-4 text-center text-sm font-medium text-[#7A6A63]"
           >
-            {PILATES_COLLAB_COPY.entranceNotice}
+            {PILATES_COLLAB_COPY.rsvpNote}
           </motion.p>
         </motion.div>
       </div>

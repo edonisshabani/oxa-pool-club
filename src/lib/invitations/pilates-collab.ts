@@ -1,21 +1,23 @@
-import type { InvitationCopy } from "./types";
-
-export const PILATES_COLLAB_COPY: InvitationCopy = {
-  inviteLabel: "You are invited to",
-  headline: "OXA × PILATES COLLAB",
+export const PILATES_COLLAB_COPY = {
+  partnerLabel: "Oxa Pool Club x Nomi Wellness Studio",
+  headline: "You're Invited ✨",
   paragraphs: [
-    "Join us for an exclusive collaboration between Oxa Pool Club and our pilates studio partner.",
-    "Enjoy a curated wellness experience that blends Riviera poolside hospitality with mindful movement, premium recovery, and an elevated summer atmosphere.",
-    "We look forward to welcoming you to this special collab event.",
+    "Join us for a special morning at Oxa Pool Club x Nomi Wellness Studio on 26 June at 09:00.",
+    "Start your day with an energizing Pilates session in the beautiful setting of Oxa Pool Club, while celebrating the upcoming opening of Nomi Pilates Studio in Ferizaj.",
   ],
-  validity: "Valid for the scheduled collab event date.",
-  entranceNotice: "Please bring this invitation and show your ID at arrival.",
-};
+  highlightsIntro: "After the session, stay with us and enjoy:",
+  highlights: [
+    "Matcha & refreshments",
+    "Drawing activity",
+    "Music & good vibes",
+    "A relaxed morning with an inspiring community of women",
+  ],
+  closing: "We would love to have you with us for this special collaboration.",
+  rsvpNote: "Please let us know if you'll be joining us. 💛",
+} as const;
 
 export const PILATES_EVENT_DETAILS = {
-  title: "OXA × Pilates Collab Experience",
-  date: "Saturday, 26 July 2026",
-  time: "10:00 AM — 2:00 PM",
-  location: "Oxa Pool Club & Partner Studio",
-  locationAddress: "French Riviera, Côte d'Azur",
+  date: "26 June 2026",
+  time: "09:00",
+  location: "Oxa Pool Club, Ujevara Resort",
 } as const;
