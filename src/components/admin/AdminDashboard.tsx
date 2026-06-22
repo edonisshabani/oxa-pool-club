@@ -2,6 +2,7 @@
 
 import { OxaLogo } from "@/components/invite/OxaLogo";
 import { exportGuestsToExcel } from "@/lib/export-guests-excel";
+import { guestMatchesSearch } from "@/lib/filter-guests";
 import { shuffleItems } from "@/lib/shuffle";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ADMIN_SESSION_KEY } from "@/lib/constants";
@@ -22,19 +23,25 @@ export function AdminDashboard() {
   const [authenticated, setAuthenticated] = useState(false);
   const [guests, setGuests] = useState<Guest[]>([]);
   const [guestFilter, setGuestFilter] = useState<GuestFilter>("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
   const filteredGuests = useMemo(() => {
-    if (guestFilter === "all") return guests;
-    return guests.filter((guest) => guest.inviteType === guestFilter);
-  }, [guestFilter, guests]);
+    return guests.filter((guest) => {
+      const matchesFilter = guestFilter === "all" || guest.inviteType === guestFilter;
+      return matchesFilter && guestMatchesSearch(guest, searchQuery);
+    });
+  }, [guestFilter, guests, searchQuery]);
 
-  const emptyMessage =
-    guestFilter === "all"
-      ? undefined
-      : guestFilter === "pool-club"
-        ? "No pool club guests yet."
-        : "No pilates collab guests yet.";
+  const emptyMessage = useMemo(() => {
+    if (searchQuery.trim()) {
+      return `No guests found for "${searchQuery.trim()}".`;
+    }
+
+    if (guestFilter === "pool-club") return "No pool club guests yet.";
+    if (guestFilter === "pilates-collab") return "No pilates collab guests yet.";
+    return undefined;
+  }, [guestFilter, searchQuery]);
 
   const fetchGuests = useCallback(async () => {
     const res = await fetch("/api/guests");
@@ -104,6 +111,16 @@ export function AdminDashboard() {
               Export to Excel
             </button>
           </div>
+          <label className="mb-4 block font-sans text-xs uppercase tracking-wider text-[#1A4B7C]">
+            Search Guests
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Kërko emër, mbiemër ose slug"
+              className="mt-2 w-full rounded-sm border border-[#E8D5B7] bg-white px-4 py-2.5 text-sm normal-case tracking-normal text-[#0D3B66] outline-none focus:border-[#C9A962]"
+            />
+          </label>
           <div className="mb-4 flex flex-wrap gap-2">
             {FILTER_OPTIONS.map((option) => {
               const isActive = guestFilter === option.value;
