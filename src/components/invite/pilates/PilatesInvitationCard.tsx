@@ -103,10 +103,20 @@ export function PilatesInvitationCard({
             <motion.p custom={7} initial="hidden" animate={motionState} variants={contentVariants}>
               {PILATES_COLLAB_COPY.closing}
             </motion.p>
+
+            <motion.p
+              custom={8}
+              initial="hidden"
+              animate={motionState}
+              variants={contentVariants}
+              className="font-medium text-[#3D3D3D]"
+            >
+              {PILATES_COLLAB_COPY.dressCode}
+            </motion.p>
           </div>
 
           <motion.div
-            custom={8}
+            custom={9}
             initial="hidden"
             animate={motionState}
             variants={contentVariants}
@@ -127,7 +137,7 @@ export function PilatesInvitationCard({
           </motion.div>
 
           <motion.p
-            custom={9}
+            custom={10}
             initial="hidden"
             animate={motionState}
             variants={contentVariants}

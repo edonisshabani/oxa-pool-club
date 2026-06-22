@@ -13,6 +13,7 @@ export const PILATES_COLLAB_COPY = {
     "A relaxed morning with an inspiring community of women",
   ],
   closing: "We would love to have you with us for this special collaboration.",
+  dressCode: "Please wear yellow or white, to match the pool vibe.",
   rsvpNote: "Please let us know if you'll be joining us.",
 } as const;
 
