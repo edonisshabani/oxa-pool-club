@@ -11,9 +11,9 @@ import type { GuestRepository } from "./repository";
 
 const BLOB_PATH = "guests.json";
 
-/** CDN cache for private blob reads (min 60s). Overwritten on each guest write. */
+/** CDN cache for private blob reads (min 60s). Keep short so new guests appear quickly. */
 const BLOB_CACHE_MAX_AGE_SECONDS = Number(
-  process.env.GUEST_BLOB_CACHE_CONTROL_MAX_AGE ?? 86_400,
+  process.env.GUEST_BLOB_CACHE_CONTROL_MAX_AGE ?? 60,
 );
 
 async function readGuestsFromBlob(): Promise<Guest[]> {
