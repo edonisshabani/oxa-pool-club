@@ -7,6 +7,9 @@ import { notFound, redirect } from "next/navigation";
 
 type Params = Promise<{ guestId: string }>;
 
+/** Cache rendered invite pages — avoids a Blob read per guest view. */
+export const revalidate = 300;
+
 export async function generateMetadata({
   params,
 }: {

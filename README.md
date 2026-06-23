@@ -63,4 +63,4 @@ src/
 3. Add **Upstash Redis** from the Vercel Marketplace (Storage tab) — free tier persists guest data on serverless.
 4. Set `ADMIN_PASSWORD` in Vercel Environment Variables.
 
-The app auto-uses Upstash when `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are set; otherwise it uses `data/guests.json` locally.
+The app auto-uses **Upstash Redis** when `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are set (recommended for production — avoids Vercel Blob Simple Operation limits). If Upstash is not configured but `BLOB_READ_WRITE_TOKEN` is set, guest data is stored in Vercel Blob (`guests.json`) with CDN caching and in-memory deduplication enabled.

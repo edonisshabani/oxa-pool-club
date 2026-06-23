@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { guestRepository } from "@/lib/guests";
+import { invalidateGuestCaches } from "@/lib/guests/guest-cache";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -11,21 +12,26 @@ export async function GET(_request: Request, { params }: Params) {
     return NextResponse.json({ error: "Guest not found." }, { status: 404 });
   }
 
-  return NextResponse.json(guest);
+  return NextResponse.json(guest, {
+    headers: {
+      "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+    },
+  });
 }
 
 export async function DELETE(_request: Request, { params }: Params) {
   const { slug } = await params;
-  const guest = await guestRepository.getBySlug(slug);
 
-  if (!guest) {
+  const deleted =
+    (await guestRepository.deleteBySlug?.(slug)) ??
+    (await guestRepository.getBySlug(slug).then(async (guest) =>
+      guest ? guestRepository.delete(guest.id) : false,
+    ));
+
+  if (!deleted) {
     return NextResponse.json({ error: "Guest not found." }, { status: 404 });
   }
 
-  const deleted = await guestRepository.delete(guest.id);
-  if (!deleted) {
-    return NextResponse.json({ error: "Failed to delete guest." }, { status: 500 });
-  }
-
+  await invalidateGuestCaches();
   return NextResponse.json({ success: true });
 }

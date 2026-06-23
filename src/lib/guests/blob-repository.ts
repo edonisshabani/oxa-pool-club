@@ -1,14 +1,31 @@
-import { get, put } from "@vercel/blob";
+import { put } from "@vercel/blob";
 import { createGuestSlug, ensureUniqueSlug } from "../slug";
 import type { CreateGuestInput, Guest } from "../types";
+import {
+  invalidateBlobGuestMemoryCache,
+  setBlobGuestMemoryCache,
+  withBlobGuestSingleflight,
+} from "./blob-memory-cache";
 import { normalizeGuest, normalizeGuests } from "./normalize-guest";
 import type { GuestRepository } from "./repository";
 
 const BLOB_PATH = "guests.json";
 
-async function readGuests(): Promise<Guest[]> {
+/** CDN cache for private blob reads (min 60s). Overwritten on each guest write. */
+const BLOB_CACHE_MAX_AGE_SECONDS = Number(
+  process.env.GUEST_BLOB_CACHE_CONTROL_MAX_AGE ?? 86_400,
+);
+
+async function readGuestsFromBlob(): Promise<Guest[]> {
+  const { get } = await import("@vercel/blob");
+
   try {
-    const result = await get(BLOB_PATH, { access: "private", useCache: false });
+    const result = await get(BLOB_PATH, {
+      access: "private",
+      // Default is true — never bypass CDN for guest list reads.
+      useCache: true,
+    });
+
     if (!result || result.statusCode !== 200 || !result.stream) return [];
 
     const text = await new Response(result.stream).text();
@@ -20,13 +37,20 @@ async function readGuests(): Promise<Guest[]> {
   }
 }
 
+async function readGuests(): Promise<Guest[]> {
+  return withBlobGuestSingleflight(readGuestsFromBlob);
+}
+
 async function writeGuests(guests: Guest[]): Promise<void> {
   await put(BLOB_PATH, JSON.stringify(guests), {
     access: "private",
     addRandomSuffix: false,
     allowOverwrite: true,
     contentType: "application/json",
+    cacheControlMaxAge: Math.max(60, BLOB_CACHE_MAX_AGE_SECONDS),
   });
+
+  setBlobGuestMemoryCache(guests);
 }
 
 /** Vercel Blob store — auto-configured when BLOB_READ_WRITE_TOKEN is set */
@@ -46,7 +70,7 @@ export const blobGuestRepository: GuestRepository = {
     const baseSlug = createGuestSlug(input.firstName, input.surname);
     const slug = ensureUniqueSlug(
       baseSlug,
-      guests.map((g) => g.slug)
+      guests.map((g) => g.slug),
     );
 
     const guest: Guest = {
@@ -70,4 +94,15 @@ export const blobGuestRepository: GuestRepository = {
     await writeGuests(next);
     return true;
   },
+
+  async deleteBySlug(slug: string) {
+    const normalized = slug.toLowerCase();
+    const guests = await readGuests();
+    const next = guests.filter((g) => g.slug.toLowerCase() !== normalized);
+    if (next.length === guests.length) return false;
+    await writeGuests(next);
+    return true;
+  },
 };
+
+export { invalidateBlobGuestMemoryCache };

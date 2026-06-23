@@ -62,4 +62,13 @@ export const localStorageGuestRepository: GuestRepository = {
     writeGuests(next);
     return true;
   },
+
+  async deleteBySlug(slug: string) {
+    const normalized = slug.toLowerCase();
+    const guests = readGuests();
+    const next = guests.filter((g) => g.slug.toLowerCase() !== normalized);
+    if (next.length === guests.length) return false;
+    writeGuests(next);
+    return true;
+  },
 };

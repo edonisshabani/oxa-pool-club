@@ -63,4 +63,13 @@ export const fileGuestRepository: GuestRepository = {
     await writeGuests(next);
     return true;
   },
+
+  async deleteBySlug(slug: string) {
+    const normalized = slug.toLowerCase();
+    const guests = await readGuests();
+    const next = guests.filter((g) => g.slug.toLowerCase() !== normalized);
+    if (next.length === guests.length) return false;
+    await writeGuests(next);
+    return true;
+  },
 };

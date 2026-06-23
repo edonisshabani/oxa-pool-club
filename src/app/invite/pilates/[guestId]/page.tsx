@@ -6,6 +6,9 @@ import { notFound } from "next/navigation";
 
 type Params = Promise<{ guestId: string }>;
 
+/** Cache rendered pilates invite pages — avoids a Blob read per guest view. */
+export const revalidate = 300;
+
 export async function generateMetadata({
   params,
 }: {
